@@ -2,9 +2,13 @@ package com.stamacake.spring.controller;
 
 import com.stamacake.spring.dao.EmployeeDAO;
 import com.stamacake.spring.model.Employee;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -13,6 +17,8 @@ public class MainRESTController {
     @Autowired
     private EmployeeDAO employeeDAO;
 
+    @Autowired
+    Logger logger;
     @RequestMapping("/")
     @ResponseBody
     public String welcome() {
@@ -24,7 +30,13 @@ public class MainRESTController {
             produces = { "application/json" })
     @ResponseBody
     public List<Employee> getEmployees() {
+
+
         List<Employee> list = employeeDAO.getAllEmployees();
+        logger.info("Request: "+ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        logger.info("From/to: "+((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getRemoteAddr());
+        logger.info("Result: "+list.toString());
         return list;
     }
 
@@ -33,6 +45,10 @@ public class MainRESTController {
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
     public Employee getEmployee(@PathVariable("empNo") String empNo) {
+        logger.info("Request: "+ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        logger.info("From/to: "+((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getRemoteAddr());
+        logger.info("Result: "+employeeDAO.getEmployee(empNo).toString());
         return employeeDAO.getEmployee(empNo);
     }
 
@@ -43,8 +59,7 @@ public class MainRESTController {
     @ResponseBody
     public Employee addEmployee(@RequestBody Employee emp) {
 
-        System.out.println("(Service Side) Creating employee: " + emp.getEmpNo());
-
+        logger.info("Creating employee: " + emp.getEmpNo());
         return employeeDAO.addEmployee(emp);
     }
 
@@ -55,7 +70,7 @@ public class MainRESTController {
     @ResponseBody
     public Employee updateEmployee(@RequestBody Employee emp) {
 
-        System.out.println("(Service Side) Editing employee: " + emp.getEmpNo());
+        logger.info("Creating employee: " + emp.getEmpNo());
 
         return employeeDAO.updateEmployee(emp);
     }
@@ -67,7 +82,7 @@ public class MainRESTController {
     @ResponseBody
     public void deleteEmployee(@PathVariable("empNo") String empNo) {
 
-        System.out.println("(Service Side) Deleting employee: " + empNo);
+        logger.info("(Service Side) Deleting employee: " + empNo);
 
         employeeDAO.deleteEmployee(empNo);
     }
