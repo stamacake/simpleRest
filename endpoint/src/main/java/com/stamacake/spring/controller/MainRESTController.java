@@ -3,6 +3,7 @@ package com.stamacake.spring.controller;
 import com.stamacake.spring.dao.EmployeeDAO;
 import com.stamacake.spring.model.Employee;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +15,13 @@ import java.util.List;
 
 @RestController
 public class MainRESTController {
+
     @Autowired
     private EmployeeDAO employeeDAO;
 
-    @Autowired
-    Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(MainRESTController.class);;
+
+
     @RequestMapping("/")
     @ResponseBody
     public String welcome() {
@@ -31,11 +34,11 @@ public class MainRESTController {
     @ResponseBody
     public List<Employee> getEmployees() {
 
-
-        List<Employee> list = employeeDAO.getAllEmployees();
         logger.info("Request: "+ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
         logger.info("From/to: "+((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest().getRemoteAddr());
+        List<Employee> list = employeeDAO.getAllEmployees();
+
         logger.info("Result: "+list.toString());
         return list;
     }

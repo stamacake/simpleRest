@@ -17,23 +17,4 @@ public class ProxyApplication {
 		SpringApplication.run(ProxyApplication.class, args);
 	}
 
-	@Bean
-	public RestTemplate getRestTemplate() {
-		return new RestTemplate();
-	}
-
-	@Bean
-	public HttpHeaders getHttpHeaders() {
-		return new HttpHeaders();
-	}
-	@Bean
-	public HttpEntity<String> getHttpEntity() {
-		return new HttpEntity<String>(getHttpHeaders());
-	}
-
-	@Bean
-	public Logger getLogger() {
-		return LoggerFactory.getLogger(MirrorRest.class);
-	}
-
 }

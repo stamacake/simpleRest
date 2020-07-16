@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +16,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.URISyntaxException;
-
 
 @RestController
 public class MirrorRest {
@@ -30,24 +26,23 @@ public class MirrorRest {
     private String URL_EMPLOYEES;
 
     @Autowired
-    HttpHeaders headers;
-    @Autowired
     RestTemplate restTemplate;
     @Autowired
     HttpEntity<String> entity;
-    @Autowired
-    Logger logger;
+
+    private static final Logger logger = LoggerFactory.getLogger(MirrorRest.class);;
 
     @RequestMapping("/employees")
     public @ResponseBody String mirrorRest()
     {
-        ResponseEntity<String> response = restTemplate.exchange(URL_EMPLOYEES,
-                HttpMethod.GET, entity, String.class);
         logger.info("Request: "+ ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
         logger.info("From: "+((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest().getRemoteAddr());
+
+        ResponseEntity<String> response = restTemplate.exchange(URL_EMPLOYEES,
+                HttpMethod.GET, entity, String.class);
         logger.info("Response: "+response);
-        String result = response.getBody();
+        String result = "v1: "+response.getBody();
         logger.info("result: "+result);
         return result;
     }
@@ -55,13 +50,14 @@ public class MirrorRest {
     @RequestMapping("/employee/{empID}")
     public @ResponseBody String mirrorRestEmp(@PathVariable String empID)
     {
-        ResponseEntity<String> response = restTemplate.exchange(BASE_URL+empID,
-                HttpMethod.GET, entity, String.class);
         logger.info("Request: "+ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
         logger.info("From: "+((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest().getRemoteAddr());
+
+        ResponseEntity<String> response = restTemplate.exchange(BASE_URL+empID,
+                HttpMethod.GET, entity, String.class);
         logger.info("Response: "+response);
-        String result = response.getBody();
+        String result = "v1: "+response.getBody();
         logger.info("result: "+result);
         return result;
     }

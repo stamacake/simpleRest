@@ -14,8 +14,4 @@ public class SpringBootRestfulApp {
         SpringApplication.run(SpringBootRestfulApp.class, args);
     }
 
-    @Bean
-    public Logger getLogger() {
-        return LoggerFactory.getLogger(MainRESTController.class);
-    }
 }
