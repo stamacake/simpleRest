@@ -46,6 +46,7 @@ public class MirrorRest {
             logger.info("ServiceUnavailableException");
             return new ResponseEntity(HttpStatus.SERVICE_UNAVAILABLE, HttpStatus.SERVICE_UNAVAILABLE);
         }
+
         ResponseEntity<String> response = restTemplate.exchange(URL_EMPLOYEES,
                 HttpMethod.GET, entity, String.class);
 
