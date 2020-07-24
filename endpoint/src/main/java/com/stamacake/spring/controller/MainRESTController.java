@@ -19,6 +19,9 @@ public class MainRESTController {
     @Value("${URL_CONFIRM}")
     private String URL_CONFIRM;
 
+    @Value("${URL_EXTERNAL}")
+    private String URL_EXTERNAL;
+
     private static final Logger logger = LoggerFactory.getLogger(MainRESTController.class);
 
     @Autowired
@@ -41,7 +44,12 @@ public class MainRESTController {
 
         logger.info("TO:" + URL_CONFIRM);
         HttpHeaders responceHeaders = new HttpHeaders();
-        responceHeaders.set("Host","external.com");
+        responceHeaders.set("Host", URL_EXTERNAL);
+
+
+        logger.info(URL_EXTERNAL+" EXTERNAL_URL");
+        logger.info(responceHeaders.toString() + " headers");
+
         HttpEntity<String> entity2 = new HttpEntity<>(responceHeaders);
         ResponseEntity<String> response = restTemplate.exchange(URL_CONFIRM,
                 HttpMethod.GET, entity2, String.class);
