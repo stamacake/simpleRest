@@ -26,11 +26,7 @@ public class MainRESTController {
     @Autowired
     HttpEntity<String> entity;
 
-    @RequestMapping("/")
-    @ResponseBody
-    public String welcome() {
-        return "Welcome";
-    }
+
 
     @RequestMapping("/*")
     public @ResponseBody String editRequest() {
@@ -40,11 +36,8 @@ public class MainRESTController {
                 .getRequest().getRemoteAddr());
 
         logger.info("TO:" + URL_CONFIRM);
-        HttpHeaders responceHeaders = new HttpHeaders();
-        responceHeaders.set("Host","external.com");
-        HttpEntity<String> entity2 = new HttpEntity<>(responceHeaders);
         ResponseEntity<String> response = restTemplate.exchange(URL_CONFIRM,
-                HttpMethod.GET, entity2, String.class);
+                HttpMethod.GET, entity, String.class);
 
         logger.info("BODY " + response.getBody());
 
