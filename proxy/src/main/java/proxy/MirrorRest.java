@@ -8,16 +8,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.naming.ServiceUnavailableException;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -37,10 +35,18 @@ public class MirrorRest {
     private static final Logger logger = LoggerFactory.getLogger(MirrorRest.class);;
 
     @RequestMapping("/employees")
-    public @ResponseBody ResponseEntity mirrorRest() {
+    public @ResponseBody ResponseEntity mirrorRest(@RequestHeader Map<String, String> headers) {
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+        logger.info("REQUEST");
         logger.info("Request: "+ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
         logger.info("From: "+((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest().getRemoteAddr());
+        headers.forEach((key, value)->
+        {
+            if(key.equals("x-request-id"))
+            logger.info(String.format("Header '%s' = %s", key, value));
+
+        });
         Random rand = new Random();
         if(rand.nextDouble()<0.8){
             logger.info("ServiceUnavailableException");
