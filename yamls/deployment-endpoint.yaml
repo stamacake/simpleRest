@@ -1,0 +1,22 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: endpoint
+ namespace: test-projects
+spec:
+ selector:
+   matchLabels:
+     app: endpoint
+ replicas: 1
+ template:
+   metadata:
+     labels:
+       app: endpoint
+     annotations:
+       sidecar.istio.io/inject: 'true'
+   spec:
+     containers:
+       - name: endpoint
+         image: stamacake/server:1.0
+         ports:
+           - containerPort: 8080

@@ -1,0 +1,15 @@
+﻿apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ingress-gateway
+  namespace: test-projects
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - endpoint.org
+      port:
+        name: http-port
+        number: 80
+        protocol: HTTP

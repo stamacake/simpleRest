@@ -1,0 +1,15 @@
+﻿apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: egress-gateway
+  namespace: test-projects
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+    - hosts:
+        - outbound123.org
+      port:
+        name: http
+        number: 80
+        protocol: HTTP

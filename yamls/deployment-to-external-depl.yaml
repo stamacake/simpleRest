@@ -1,0 +1,30 @@
+﻿kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: to-external-depl
+  namespace: test-projects
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: to-external-depl
+  template:
+    metadata:
+      labels:
+        app: to-external-depl
+        version: v1
+      annotations:
+        sidecar.istio.io/inject: 'true'
+    spec:
+      containers:
+        - name: to-external-depl
+          image: 'stamacake/endpointheadres:2.5'
+          ports:
+            - containerPort: 8081
+              protocol: TCP
+          env:
+            - name: URL_CONFIRM
+              value: 'http://external'
+            - name: URL_EXTERNAL
+              value: outbound123.org
+  
