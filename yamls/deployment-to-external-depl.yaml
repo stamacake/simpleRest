@@ -10,6 +10,7 @@ spec:
       app: to-external-depl
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: to-external-depl
         version: v1
@@ -27,4 +28,3 @@ spec:
               value: 'http://external'
             - name: URL_EXTERNAL
               value: outbound123.org
-  
