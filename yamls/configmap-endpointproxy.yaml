@@ -1,0 +1,9 @@
+﻿kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: endpointproxy
+  namespace: test-projects
+data:
+  BASE_URL: 'http://endpoint/employee/'
+  URL_EMPLOYEES: 'http://endpoint/employees'
+  server.port: '8080'
